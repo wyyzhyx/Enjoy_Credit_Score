@@ -42,20 +42,25 @@
   </div>
 
   <div class="card">
-    <h3>➕ 单个添加 / 修改会员分数</h3>
+    <h3>➕ 添加 / 修改会员分数</h3>
     <input id="key" placeholder="手机号 或 微信名（唯一标识）">
-    <div class="row"><input id="base" placeholder="基础分"></div>
-    <div class="row"><input id="buy" placeholder="消费分"><input id="ref" placeholder="推荐分"></div>
-    <div class="row"><input id="act" placeholder="互动分"><input id="sum" placeholder="综合分"></div>
+    <div class="row">
+      <input id="buy" placeholder="消费分">
+      <input id="ref" placeholder="推荐分">
+    </div>
+    <div class="row">
+      <input id="act" placeholder="互动分">
+      <input id="sum" placeholder="综合分">
+    </div>
     <button onclick="save()">保存 / 更新会员</button>
   </div>
 
   <div class="card">
-    <h3>📥 批量导入会员（一行一个，英文逗号分隔）</h3>
-    <p style="font-size:12px;color:#666;margin-bottom:8px">格式：会员名,基础分,消费分,推荐分,互动分,综合分</p>
+    <h3>📥 批量导入会员（一行一个）</h3>
+    <p style="font-size:12px;color:#666;margin-bottom:8px">格式：会员名,消费分,推荐分,互动分,综合分</p>
     <textarea id="batchData" placeholder="例如：
-测试001,500,60,20,10,5
-测试002,500,80,30,20,10"></textarea>
+测试001,60,20,10,5
+测试002,80,30,20,10"></textarea>
     <button class="batch-btn" onclick="batchImport()">一键批量导入</button>
   </div>
 
@@ -85,22 +90,25 @@ function login() {
   }
 }
 
+// 单个保存
 async function save() {
   const key = document.getElementById("key").value.trim();
-  const base = parseInt(document.getElementById("base").value) || 500;
   const buy = parseInt(document.getElementById("buy").value) || 0;
   const ref = parseInt(document.getElementById("ref").value) || 0;
   const act = parseInt(document.getElementById("act").value) || 0;
   const sum = parseInt(document.getElementById("sum").value) || 0;
+
   if (!key) { alert("请输入会员标识"); return; }
+
   await fetch(API + "/set", {
     method: "POST",
-    body: JSON.stringify({ key, data: { base, buy, ref, act, sum } })
+    body: JSON.stringify({ key, data: { base:500, buy, ref, act, sum } })
   });
   alert("保存成功！");
   loadList();
 }
 
+// 批量导入
 async function batchImport() {
   const text = document.getElementById("batchData").value.trim();
   if (!text) { alert("请输入批量数据"); return; }
@@ -108,23 +116,24 @@ async function batchImport() {
   let success = 0;
   for (let line of lines) {
     const parts = line.split(",").map(p => p.trim());
-    if (parts.length < 6) continue;
+    if (parts.length < 5) continue;
     const key = parts[0];
-    const base = parseInt(parts[1]) || 500;
-    const buy = parseInt(parts[2]) || 0;
-    const ref = parseInt(parts[3]) || 0;
-    const act = parseInt(parts[4]) || 0;
-    const sum = parseInt(parts[5]) || 0;
+    const buy = parseInt(parts[1]) || 0;
+    const ref = parseInt(parts[2]) || 0;
+    const act = parseInt(parts[3]) || 0;
+    const sum = parseInt(parts[4]) || 0;
+
     await fetch(API + "/set", {
       method: "POST",
-      body: JSON.stringify({ key, data: { base, buy, ref, act, sum } })
+      body: JSON.stringify({ key, data: { base:500, buy, ref, act, sum } })
     });
     success++;
   }
-  alert(`批量导入完成！成功导入 ${success} 条会员`);
+  alert(`批量导入完成！成功导入 ${success} 条`);
   loadList();
 }
 
+// 删除
 async function del() {
   const key = document.getElementById("delKey").value.trim();
   if (!key) return;
@@ -133,6 +142,7 @@ async function del() {
   loadList();
 }
 
+// 加载列表
 async function loadList() {
   const r = await fetch(API + "/list");
   const d = await r.json();
