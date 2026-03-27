@@ -1,0 +1,38 @@
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+    const path = url.pathname;
+
+    if (path.startsWith("/get/")) {
+      const key = path.split("/")[2];
+      const data = await env.KV.get(key);
+      return data 
+        ? Response.json({ success: true, data: JSON.parse(data) })
+        : Response.json({ success: false });
+    }
+
+    if (path === "/set" && request.method === "POST") {
+      const { key, data } = await request.json();
+      await env.KV.put(key, JSON.stringify(data));
+      return Response.json({ ok: true });
+    }
+
+    if (path.startsWith("/del/")) {
+      const key = path.split("/")[2];
+      await env.KV.delete(key);
+      return Response.json({ ok: true });
+    }
+
+    if (path === "/list") {
+      const { keys } = await env.KV.list();
+      const all = {};
+      for (const k of keys) {
+        const d = await env.KV.get(k.name);
+        if (d) all[k.name] = JSON.parse(d);
+      }
+      return Response.json({ data: all });
+    }
+
+    return new Response("乐享信用分API服务", { status: 200 });
+  }
+};
