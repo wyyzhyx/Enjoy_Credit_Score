@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>“乐享信用分”会员专属福利计划</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    body {
+      background: #f7f8fa;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 25px;
+      margin-bottom: 18px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .header h1 {
+      font-size: 22px;
+      color: #ff5e57;
+      font-weight: bold;
+    }
+    .header p {
+      color: #666;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+    .input-box {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      font-size: 16px;
+      margin: 10px 0;
+      outline: none;
+    }
+    .tip {
+      color: #999;
+      font-size: 12px;
+      text-align: center;
+    }
+    .btn {
+      width: 100%;
+      background: #ff5e57;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 15px;
+      font-size: 17px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .score-total {
+      text-align: center;
+      padding: 20px 0;
+    }
+    .score-total h2 {
+      font-size: 48px;
+      color: #333;
+    }
+    .score-total .level {
+      background: #fff0ef;
+      color: #ff5e57;
+      padding: 5px 12px;
+      border-radius: 20px;
+      display: inline-block;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+    .item {
+      display: flex;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid #f5f5f5;
+    }
+    .item:last-child { border-bottom: none; }
+    .item-name { color: #333; font-size: 15px; }
+    .item-score { color: #ff5e57; font-weight: bold; }
+    .benefit {
+      background: #fdf3f2;
+      border-radius: 12px;
+      padding: 15px;
+      margin-top: 10px;
+    }
+    .benefit h3 {
+      color: #ff5e57;
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+    .benefit p {
+      color: #666;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .policy-card { margin-top: 20px; }
+    .policy-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #ff5e57;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .policy-content {
+      margin-top: 12px;
+      display: none;
+      color: #666;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .footer {
+      text-align: center;
+      color: #999;
+      font-size: 12px;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card header">
+  <h1>“乐享信用分”会员专属福利计划</h1>
+  <p>乐邻心选旗舰店 | 定海优品商行</p>
+</div>
+
+<div class="card">
+  <div class="tip">支持手机号或微信名查询</div>
+  <input type="text" class="input-box" placeholder="请输入手机号/微信名" id="searchInput">
+  <button class="btn" onclick="searchScore()">立即查询我的分数</button>
+</div>
+
+<div class="card policy-card">
+  <div class="policy-title" onclick="togglePolicy()">
+    <span>📋 信用分政策简介</span>
+    <span id="arrow">▼</span>
+  </div>
+  <div class="policy-content" id="policyContent">
+<p><strong>发布单位：</strong>乐邻心选旗舰店 | 定海优品商行</p>
+<p><strong>积分构成（最高1100分）：</strong><br>
+• 基础分：500分<br>
+• 消费分：最高200分<br>
+• 推荐分：最高200分<br>
+• 互动分：最高100分<br>
+• 综合分：最高100分</p>
+<p><strong>福利等级：</strong><br>
+• ≥550分：基础福利<br>
+• ≥700分+消费分≥30：进阶福利<br>
+• ≥900分+消费分≥80+综合分≥60：尊享福利</p>
+<p><strong>生效日期：2026年3月30日</strong></p>
+  </div>
+</div>
+
+<div id="result" style="display: none;">
+  <div class="card score-total">
+    <h2 id="total">0</h2>
+    <div class="level" id="level">基础会员</div>
+  </div>
+  <div class="card">
+    <div class="item"><div class="item-name">基础分</div><div class="item-score" id="base"></div></div>
+    <div class="item"><div class="item-name">消费分</div><div class="item-score" id="buy"></div></div>
+    <div class="item"><div class="item-name">推荐分</div><div class="item-score" id="ref"></div></div>
+    <div class="item"><div class="item-name">互动分</div><div class="item-score" id="act"></div></div>
+    <div class="item"><div class="item-name">综合分</div><div class="item-score" id="sum"></div></div>
+  </div>
+  <div class="benefit">
+    <h3>📌 你可享受的福利</h3>
+    <p id="benefitTxt"></p>
+  </div>
+</div>
+
+<div class="footer">
+  最终解释权归乐邻心选旗舰店所有<br>生效日期：2026年3月30日
+</div>
+
+<script>
+const API = "https://score.0580520.cn";
+
+async function searchScore() {
+  const key = document.getElementById("searchInput").value.trim();
+  if (!key) { alert("请输入手机号或微信名"); return; }
+  try {
+    const res = await fetch(`${API}/get/${key}`);
+    const data = await res.json();
+    if (!data.success) {
+      showScore({ base:500, buy:0, ref:0, act:0, sum:0 });
+      alert("未找到您的信息，初始分为500分");
+      return;
+    }
+    showScore(data.data);
+  } catch (e) { alert("查询失败，请稍后再试"); }
+}
+
+function showScore(d) {
+  const total = d.base + d.buy + d.ref + d.act + d.sum;
+  let level, benefit;
+  if (total >= 900 && d.buy >= 80 && d.sum >= 60) {
+    level = "尊享会员";
+    benefit = "✅ 尊享福利：品牌纸巾月月送、高价值福利品兑换特权";
+  } else if (total >= 700 && d.buy >= 30) {
+    level = "进阶会员";
+    benefit = "✅ 进阶福利：富氢水周卡、门店特价品优先购、健康直播间红包";
+  } else if (total >= 550) {
+    level = "基础会员";
+    benefit = "✅ 基础福利：百货直播间每日看播领券兑换福利品";
+  } else {
+    level = "待激活";
+    benefit = "💡 信用分≥550分即可解锁基础福利";
+  }
+  document.getElementById("base").innerText = d.base;
+  document.getElementById("buy").innerText = d.buy;
+  document.getElementById("ref").innerText = d.ref;
+  document.getElementById("act").innerText = d.act;
+  document.getElementById("sum").innerText = d.sum;
+  document.getElementById("total").innerText = total;
+  document.getElementById("level").innerText = level;
+  document.getElementById("benefitTxt").innerText = benefit;
+  document.getElementById("result").style.display = "block";
+}
+
+function togglePolicy() {
+  const c = document.getElementById("policyContent");
+  const a = document.getElementById("arrow");
+  if (c.style.display === "block") {
+    c.style.display = "none"; a.innerText = "▼";
+  } else {
+    c.style.display = "block"; a.innerText = "▲";
+  }
+}
+</script>
+</body>
+</html>

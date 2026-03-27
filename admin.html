@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>“乐享信用分”会员专属福利计划 - 管理后台</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:PingFang SC,Microsoft YaHei,sans-serif}
+    body{background:#f7f8fa;max-width:600px;margin:0 auto;padding:20px}
+    .card{background:white;border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+    .title{text-align:center;color:#ff5e57;margin-bottom:10px;font-size:20px}
+    .tip{text-align:center;color:#666;font-size:13px;margin-bottom:20px}
+    input{width:100%;padding:12px;border:1px solid #eee;border-radius:10px;margin-bottom:10px;font-size:15px}
+    .row{display:flex;gap:8px}
+    .row input{flex:1}
+    button{width:100%;padding:14px;background:#ff5e57;color:white;border:none;border-radius:10px;font-size:16px;font-weight:bold;margin-top:6px}
+    .del{background:#999}
+    h3{font-size:16px;color:#333;margin-bottom:10px}
+    .user-item{padding:14px;background:#fdf3f2;border-radius:12px;margin-bottom:10px}
+    .user-name{font-weight:bold;color:#ff5e57;margin-bottom:6px}
+    .user-info{font-size:13px;color:#333;line-height:1.5}
+    #login{position:fixed;top:0;left:0;width:100%;height:100%;background:white;display:flex;align-items:center;justify-content:center;z-index:999}
+  </style>
+</head>
+<body>
+
+<div id="login">
+  <div class="card">
+    <h2 class="title">管理后台登录</h2>
+    <p class="tip">乐邻心选旗舰店 | 定海优品商行</p>
+    <input type="password" id="pwd" placeholder="请输入管理员密码">
+    <button onclick="login()">登录</button>
+  </div>
+</div>
+
+<div id="main" style="display:none">
+  <div class="card">
+    <h2 class="title">“乐享信用分”管理后台</h2>
+    <p class="tip">乐邻心选旗舰店 | 定海优品商行</p>
+  </div>
+
+  <div class="card">
+    <h3>➕ 添加 / 修改会员分数</h3>
+    <input id="key" placeholder="手机号 或 微信名（唯一标识）">
+    <div class="row"><input id="base" placeholder="基础分"></div>
+    <div class="row"><input id="buy" placeholder="消费分"><input id="ref" placeholder="推荐分"></div>
+    <div class="row"><input id="act" placeholder="互动分"><input id="sum" placeholder="综合分"></div>
+    <button onclick="save()">保存 / 更新会员</button>
+  </div>
+
+  <div class="card">
+    <h3>🗑 删除会员</h3>
+    <input id="delKey" placeholder="输入要删除的手机号/微信名">
+    <button class="del" onclick="del()">删除会员</button>
+  </div>
+
+  <div class="card">
+    <h3>📋 全部会员列表</h3>
+    <div id="list"></div>
+  </div>
+</div>
+
+<script>
+const API = "https://score.0580520.cn";
+const ADMIN_PWD = "hcdl133h";
+
+function login() {
+  if (document.getElementById("pwd").value === ADMIN_PWD) {
+    document.getElementById("login").style.display = "none";
+    document.getElementById("main").style.display = "block";
+    loadList();
+  } else {
+    alert("密码错误");
+  }
+}
+
+async function save() {
+  const key = document.getElementById("key").value.trim();
+  const base = parseInt(document.getElementById("base").value) || 500;
+  const buy = parseInt(document.getElementById("buy").value) || 0;
+  const ref = parseInt(document.getElementById("ref").value) || 0;
+  const act = parseInt(document.getElementById("act").value) || 0;
+  const sum = parseInt(document.getElementById("sum").value) || 0;
+  if (!key) { alert("请输入手机号或微信名"); return; }
+  await fetch(API + "/set", {
+    method: "POST",
+    body: JSON.stringify({ key, data: { base, buy, ref, act, sum } })
+  });
+  alert("保存成功！");
+  loadList();
+}
+
+async function del() {
+  const key = document.getElementById("delKey").value.trim();
+  if (!key) return;
+  await fetch(API + "/del/" + key);
+  alert("已删除");
+  loadList();
+}
+
+async function loadList() {
+  const r = await fetch(API + "/list");
+  const d = await r.json();
+  let html = "";
+  for (let k in d.data) {
+    const u = d.data[k];
+    const total = u.base + u.buy + u.ref + u.act + u.sum;
+    html += `
+    <div class="user-item">
+      <div class="user-name">${k}</div>
+      <div class="user-info">
+        基础:${u.base} 消费:${u.buy} 推荐:${u.ref} 互动:${u.act} 综合:${u.sum}<br>
+        总分:${total}
+      </div>
+    </div>`;
+  }
+  document.getElementById("list").innerHTML = html;
+}
+</script>
+</body>
+</html>
