@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>“乐享信用分”管理后台</title>
+<title>“乐享分”管理后台</title>
   <style>
     *{margin:0;padding:0;box-sizing:border-box;font-family:PingFang SC,Microsoft YaHei,sans-serif}
     body{background:#f7f8fa;max-width:600px;margin:0 auto;padding:20px}
@@ -28,7 +28,7 @@
 
 <div id="login">
   <div class="card">
-    <h2 class="title">“乐享信用分”管理后台登录</h2>
+    <h2 class="title">“乐享分”管理后台登录</h2>
     <p class="tip">乐邻心选旗舰店 | 定海优品商行</p>
     <input type="password" id="pwd" placeholder="请输入管理员密码">
     <button onclick="login()">登录</button>
@@ -37,7 +37,7 @@
 
 <div id="main" style="display:none">
   <div class="card">
-    <h2 class="title">“乐享信用分”管理后台</h2>
+    <h2 class="title">“乐享分”管理后台</h2>
     <p class="tip">乐邻心选旗舰店 | 定海优品商行</p>
   </div>
 
@@ -50,7 +50,7 @@
     </div>
     <div class="row">
       <input id="act" placeholder="互动分≤100">
-      <input id="sum" placeholder="综合分≤100">
+      <input id="sum" placeholder="乐善分≤100">
     </div>
     <button onclick="save()">保存 / 更新会员</button>
   </div>
@@ -154,7 +154,7 @@ async function loadList() {
     <div class="user-item">
       <div class="user-name">${k}</div>
       <div class="user-info">
-        基础:${u.base} 消费:${u.buy} 推荐:${u.ref} 互动:${u.act} 综合:${u.sum}<br>
+        基础:${u.base} 消费:${u.buy} 推荐:${u.ref} 互动:${u.act} 乐善:${u.sum}<br>
         总分:${total}
       </div>
     </div>`;
