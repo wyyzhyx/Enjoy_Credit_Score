@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>“乐享信用分”会员专属福利计划</title>
+<title>“乐享分”会员专属福利计划</title>
   <style>
     * {
       margin: 0;
@@ -132,14 +132,14 @@
 <body>
 
 <div class="card header">
-  <h1>“乐享信用分”<br>心选会员专属福利计划</h1>
+  <h1>“乐享分”<br>心选会员专属福利计划</h1>
   <p>乐邻心选旗舰店 | 定海优品商行</p>
 </div>
 
 <div class="card">
   <div class="tip">支持手机号/微信名/微信号查询</div>
   <input type="text" class="input-box" placeholder="请输入手机号/微信名/微信号" id="searchInput">
-  <button class="btn" onclick="searchScore()">立即查询我的分数</button>
+  <button class="btn" onclick="searchScore()">立即查询我的乐享分</button>
 </div>
 
 <div id="result" style="display: none;">
@@ -152,7 +152,7 @@
     <div class="item"><div class="item-name">消费分</div><div class="item-score" id="buy"></div></div>
     <div class="item"><div class="item-name">推荐分</div><div class="item-score" id="ref"></div></div>
     <div class="item"><div class="item-name">互动分</div><div class="item-score" id="act"></div></div>
-    <div class="item"><div class="item-name">综合分</div><div class="item-score" id="sum"></div></div>
+    <div class="item"><div class="item-name">乐善分</div><div class="item-score" id="sum"></div></div>
   </div>
   <div class="benefit">
     <h3>📌 你可享受的福利</h3>
@@ -163,7 +163,7 @@
 <!-- 1. 确保 HTML 中的类名是 policy-content (带连字符) -->
 <div class="card policy-card">
   <div class="policy-title" onclick="togglePolicy()">
-    <span>📋 “乐享信用分”会员计划简介</span>
+    <span>📋 “乐享分”会员计划简介</span>
     <span id="arrow">▼</span>
   </div>
   
@@ -175,12 +175,12 @@
     • 消费分：最高200分<br>
     • 推荐分：最高200分<br>
     • 互动分：最高100分<br>
-    • 综合分：最高100分</p>
+    • 乐善分：最高100分</p>
     
     <p><strong>福利等级：</strong><br>
     • ≥550分：基础福利<br>
     • ≥700分+消费分≥30：进阶福利<br>
-    • ≥900分+消费分≥80+综合分≥60：尊享福利</p>
+    • ≥900分+消费分≥80+乐善分≥60：尊享福利</p>
     
     <p><strong>积分管理：</strong><br>
     • 消费分/互动分每3个月滚动更新<br>
@@ -221,13 +221,13 @@ function showScore(d) {
   let level, benefit;
   if (total >= 900 && d.buy >= 80 && d.sum >= 60) {
     level = "尊享会员";
-    benefit = "✅ 尊享福利：品牌纸巾月月送、高价值福利品兑换活动等特权";
+    benefit = "✅ 尊享福利：每月可享品牌纸巾免费领、富氢水月卡、门店优采高价值福利品（乌鸡、土鸡、土鸡蛋等）兑换特权";
   } else if (total >= 700 && d.buy >= 30) {
     level = "进阶会员";
-    benefit = "✅ 进阶福利：富氢水周卡、门店特价品优先购、健康直播间红包等";
+    benefit = "✅ 进阶福利：每月享富氢水周卡权益（周卡可续5袋，有效期1个月）、直播间大件福利品优先兑、健康直播间活动红包";
   } else if (total >= 550) {
     level = "基础会员";
-    benefit = "✅ 基础福利：百货直播间每日看播领券兑换福利品";
+    benefit = "✅ 基础福利：富氢水1消费积分5张券可续袋、百货直播间看播领券消费积分兑换福利品、购买门店商品6消费积分6张券可抵扣1元";
   } else {
     level = "待激活";
     benefit = "💡 信用分≥550分即可解锁基础福利";
